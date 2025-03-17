@@ -18,13 +18,11 @@ import {
   import { RequestHeader } from '../../decorators/request-header.decorator';
   import { ReadCustomerOrderService } from './services/read.service';
   import { ReadCustomerOrderResDto } from './dtos/read-customer-order.dto';
-  import {MessagePattern, Payload} from '@nestjs/microservices';
-  import {KafkaMessage} from '@nestjs/microservices/external/kafka.interface';
   import { CustomerExistsGuard } from './../../guards/customer-exists.guard';
   import {StoreExistsGuard} from '../../guards/store-exists.guard';
   import { ApiOperation, ApiResponse } from '@nestjs/swagger';
   
-  @Controller()
+  @Controller('customers/:customerId/orders')
   export class CustomerOrdersController {
     constructor(
       private readonly createCustomerOrderService: CreateCustomerOrderService,
@@ -33,7 +31,7 @@ import {
   
     @ApiOperation({ summary: 'Create customer order' })
     @ApiResponse({ status: 201, type: CreateCustomerOrderResDto })
-    @Post('/customers/:customerId/orders')
+    @Post()
     @HttpCode(HttpStatus.CREATED)
     @UseGuards(StoreExistsGuard, CustomerExistsGuard)
     async createCustomerOrder(
@@ -50,7 +48,7 @@ import {
   
     @ApiOperation({ summary: 'Get customer orders' })
     @ApiResponse({ status: 200, type: [ReadCustomerOrderResDto] })
-    @Get('/customers/:customerId/orders')
+    @Get()
     @HttpCode(HttpStatus.OK)
     @UseGuards(StoreExistsGuard, CustomerExistsGuard)
     async getCustomerOrder(
@@ -65,7 +63,7 @@ import {
   
     @ApiOperation({ summary: 'Get customer order by id' })
     @ApiResponse({ status: 200, type: ReadCustomerOrderResDto })
-    @Get('/customers/:customerId/orders/:orderId')
+    @Get(':orderId')
     @HttpCode(HttpStatus.OK)
     @UseGuards(StoreExistsGuard, CustomerExistsGuard)
     async getCustomerOrderById(
