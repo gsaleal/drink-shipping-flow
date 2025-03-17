@@ -68,7 +68,10 @@ export class CreateCustomerOrderService {
       products: eventProducts,
     });
 
-    return new CreateCustomerOrderResDto(createdCustomerOrder.get());
+    const customerOrderResp = new CreateCustomerOrderResDto(createdCustomerOrder.get());
+    customerOrderResp.products = products;
+
+    return customerOrderResp;
   }
 
   async publishOrderCreatedEvent(payload: CreateCustomerOrderResDto) {
