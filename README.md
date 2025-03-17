@@ -19,6 +19,7 @@ O Drink Shipping Flow é um sistema que gerencia o ciclo de vida de envio de beb
 - **Database**: [Postgress](https://www.postgresql.org/)
 - **Tests**: [Nestjs test](https://docs.nestjs.com/fundamentals/testing)
 - **Controle de Versão**: [Git](https://git-scm.com/)
+- **Documentação**: [Swagger](https://swagger.io/)
 
 
 ## 🚀 Como Executar o Projeto
@@ -27,6 +28,7 @@ O Drink Shipping Flow é um sistema que gerencia o ciclo de vida de envio de beb
 - Node v22.14.0
 - npm v10.9.2
 - Docker
+
 
 ### Instalação
 
@@ -55,15 +57,20 @@ O Drink Shipping Flow é um sistema que gerencia o ciclo de vida de envio de beb
     npm run start:docker
    ```
 
-O projeto contem o docker-compose.yaml que ira inicializar o banco de dados (postgres), kafka, mockserver e a aplicação.
+O projeto contem o docker-compose.yaml que irá inicializar o banco de dados (postgres), kafka, mockserver e a aplicação.
+
 
 #### Fluxo do sistema:
+
+Após a criação de um customer order, será enviado ao topico do kafka **customer-order-created** que vai ser consumida e atualizará a tabela order.
+Caso passe de 1000 itens, preencherá o campo orderedAt para mostrar que essa ordem foi processada e enviada a vendedora e será chamado outro topico **order-closed** que será responsável por enviar para o mock-server o orderId da ordem fechada.
+Após esse processo, é criada uma nova ordem para dar inicio ao processo novamente.
 
 ![image](https://github.com/user-attachments/assets/da18a43b-deeb-45af-97df-a7d22e718818)
 
 
    
-#### 1. Cria store:
+#### 1. Criar a Revendedora: 
 `POST /api/stores`
 ```json
 {
@@ -77,7 +84,7 @@ O projeto contem o docker-compose.yaml que ira inicializar o banco de dados (pos
 }
 ```
 
-#### 2. Cria produtos:
+#### 2. Criar os produtos:
 `POST /api/products`
 ```json
 {
@@ -95,7 +102,7 @@ O projeto contem o docker-compose.yaml que ira inicializar o banco de dados (pos
 ```
 
 
-#### 3. Cria customer
+#### 3. Criar o cliente
 `POST /api/customers`
 ```json
 {
@@ -105,7 +112,7 @@ O projeto contem o docker-compose.yaml que ira inicializar o banco de dados (pos
 }
 ```
 
-#### 4. Cria customer order para store:
+#### 4. Criar a ordem de pedido do cliente para store:
 HEADER: `x-store-id: 1`
 <br>
 `POST /api/customers/1/orders`
@@ -121,7 +128,7 @@ HEADER: `x-store-id: 1`
 }
 ```
 
-#### 5. Crie outra customer order para passar de mil:
+#### 5. Crie outra ordem de pedido para passar de mil:
 HEADER: `x-store-id: 1`
 <br>
 `POST /api/customers/1/orders`
@@ -153,3 +160,5 @@ HEADER: `x-store-id: 1`
   } ]
 }
 ```
+
+
