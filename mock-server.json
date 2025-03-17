@@ -1,0 +1,15 @@
+[
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/HEINEKEN/send-order"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": "{\"id\": \"5e7046d1-4e1c-338b-a257-115036a577da\"}"
+    }
+  }
+]
