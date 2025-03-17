@@ -11,9 +11,10 @@ export class OrdersRepository {
         private orderModel: typeof Order,
     ) {}
 
-    async findNotOrdered() {
+    async findNotOrdered(storeId: number): Promise<Order | null> {
         return this.orderModel.findOne({
-            where: {
+            where: { 
+                storeId,
                 orderedAt: null,
             },
         });

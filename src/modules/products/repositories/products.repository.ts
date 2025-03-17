@@ -14,6 +14,10 @@ export class ProductsRepository {
     return this.productModel.findByPk(id);
   }
 
+  async getBySku(sku: string): Promise<Product | null> {
+    return this.productModel.findOne({where: {sku: sku}});
+  }
+
   async getByIds(ids: Array<number>): Promise<Array<Product>> {
     return this.productModel.findAll({
       where: {

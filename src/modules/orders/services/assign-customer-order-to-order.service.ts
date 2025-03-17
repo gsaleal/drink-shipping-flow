@@ -18,7 +18,7 @@ export class AssignCustomerOrderToOrderService {
     async handle(
         createdCustomerOrder: AssignCustomerOrderToOrderInputDto,
     ) {
-        let order = await this.ordersRepository.findNotOrdered();
+        let order = await this.ordersRepository.findNotOrdered(createdCustomerOrder.storeId);
 
         if (!order) {
             this.logger.log(`No order found, creating new order for customer order ${createdCustomerOrder.id}`);
