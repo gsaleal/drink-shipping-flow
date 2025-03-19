@@ -161,4 +161,8 @@ HEADER: `x-store-id: 1`
 }
 ```
 
+Create a flow on node-red to exemplify:
+![image](https://github.com/user-attachments/assets/5728d837-f2e7-4ea7-a103-f09690ac64c0)
+
+
 
