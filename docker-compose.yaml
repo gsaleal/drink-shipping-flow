@@ -20,22 +20,22 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       - KAFKA_CFG_LOG4J_ROOT_LOGLEVEL=ERROR
 
-  mockserver:
-    image: mockserver/mockserver:5.15.0
-    ports:
-      - 1080:1080
-    environment:
-      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mock-server.json
-    volumes:
-      - type: bind
-        source: .
-        target: /config
+  # mockserver:
+  #   image: mockserver/mockserver:5.15.0
+  #   ports:
+  #     - 1080:1080
+  #   environment:
+  #     MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mock-server.json
+  #   volumes:
+  #     - type: bind
+  #       source: .
+  #       target: /config
 
-  app:
-    image: node:22.14.0
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: npm run start:dev
+  # app:
+  #   image: node:22.14.0
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - .:/app
+  #   working_dir: /app
+  #   command: npm run start:dev

@@ -20,3 +20,8 @@ services:
     working_dir: /app
     command: npm run start:dev
 
+  node-red:
+    container_name: mynodered
+    image: nodered/node-red
+    ports:
+      - "1880:1880"

@@ -1,0 +1,398 @@
+[
+    {
+        "id": "a7904b7853fbe02b",
+        "type": "tab",
+        "label": "Flow Inicial",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "inject_start",
+        "type": "inject",
+        "z": "a7904b7853fbe02b",
+        "name": "Iniciar Fluxo",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "[{\"document\":\"12345678945613\",\"socialName\":\"Leal\",\"name\":\"Emporium\",\"email\":\"email2@email.com\",\"phone\":[\"31114477845\"],\"representative\":[\"test\"],\"address\":[\"Belo Horizonte - mg\"]},{\"document\":\"12345678945614\",\"socialName\":\"Leal\",\"name\":\"Emporium\",\"email\":\"email3@email.com\",\"phone\":[\"31114477845\"],\"representative\":[\"test\"],\"address\":[\"Belo Horizonte - mg\"]}]",
+        "payloadType": "json",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "7f1880aa93533c78"
+            ]
+        ]
+    },
+    {
+        "id": "http_create_store",
+        "type": "http request",
+        "z": "a7904b7853fbe02b",
+        "name": "POST /api/stores",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://drink-shipping-flow-app-1:3000/api/stores",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 670,
+        "y": 100,
+        "wires": [
+            [
+                "create_product"
+            ]
+        ]
+    },
+    {
+        "id": "create_product",
+        "type": "function",
+        "z": "a7904b7853fbe02b",
+        "name": "Criar Produto",
+        "func": "\nmsg.payload = {\n    \"name\": \"Cerveja Chopp BRAHMA 350ml\",\n    \"sku\": \"7891149010509\",\n    \"price\": 4000\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 180,
+        "wires": [
+            [
+                "http_create_product"
+            ]
+        ]
+    },
+    {
+        "id": "http_create_product",
+        "type": "http request",
+        "z": "a7904b7853fbe02b",
+        "name": "POST /api/products",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://drink-shipping-flow-app-1:3000/api/products",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 670,
+        "y": 180,
+        "wires": [
+            [
+                "create_customer"
+            ]
+        ]
+    },
+    {
+        "id": "create_customer",
+        "type": "function",
+        "z": "a7904b7853fbe02b",
+        "name": "Criar Cliente",
+        "func": "msg.payload = {\n    \"document\": \"12345612345\",\n    \"name\": \"Pessoa Fisica\",\n    \"socialName\": \"\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 260,
+        "wires": [
+            [
+                "http_create_customer"
+            ]
+        ]
+    },
+    {
+        "id": "http_create_customer",
+        "type": "http request",
+        "z": "a7904b7853fbe02b",
+        "name": "POST /api/customers",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://drink-shipping-flow-app-1:3000/api/customers",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 680,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "create_order",
+        "type": "function",
+        "z": "a7904b7853fbe02b",
+        "name": "Criar Pedido",
+        "func": "msg.payload = {\n    \"products\": [\n        {\n            \"id\": 1, \n            \"quantity\": 1\n        }\n    ]\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 130,
+        "y": 420,
+        "wires": [
+            [
+                "http_create_order"
+            ]
+        ]
+    },
+    {
+        "id": "http_create_order",
+        "type": "http request",
+        "z": "a7904b7853fbe02b",
+        "name": "POST /api/customers/1/orders",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://drink-shipping-flow-app-1:3000/api/customers/1/orders",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "x-store-id",
+                "valueType": "other",
+                "valueValue": "1"
+            }
+        ],
+        "x": 390,
+        "y": 420,
+        "wires": [
+            [
+                "debug_result"
+            ]
+        ]
+    },
+    {
+        "id": "debug_result",
+        "type": "debug",
+        "z": "a7904b7853fbe02b",
+        "name": "Resultado Final",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "8cc9a00ad9585527",
+        "type": "postgresql",
+        "z": "a7904b7853fbe02b",
+        "name": "",
+        "query": "SELECT \n    S.NAME,\n    O.\"totalPrice\",\n    O.\"totalItems\",\n    O.\"orderedAt\"\nFROM ORDERS O\nINNER JOIN STORES S \n    ON S.ID = O.\"storeId\"\n\n; ",
+        "postgreSQLConfig": "14bd5020994a69af",
+        "split": false,
+        "rowsPerMsg": 1,
+        "outputs": 1,
+        "x": 390,
+        "y": 520,
+        "wires": [
+            [
+                "d23d013e38a5d7a2"
+            ]
+        ]
+    },
+    {
+        "id": "d23d013e38a5d7a2",
+        "type": "debug",
+        "z": "a7904b7853fbe02b",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "1908dc50ed10bf5d",
+        "type": "inject",
+        "z": "a7904b7853fbe02b",
+        "name": "Verificar a order",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 520,
+        "wires": [
+            [
+                "8cc9a00ad9585527"
+            ]
+        ]
+    },
+    {
+        "id": "7f1880aa93533c78",
+        "type": "split",
+        "z": "a7904b7853fbe02b",
+        "name": "Criar 2 stores",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 400,
+        "y": 100,
+        "wires": [
+            [
+                "http_create_store"
+            ]
+        ]
+    },
+    {
+        "id": "11180a3dc7e42e6d",
+        "type": "inject",
+        "z": "a7904b7853fbe02b",
+        "name": "Criar pedidos até chegar em 1000 produtos",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 360,
+        "wires": [
+            [
+                "create_order"
+            ]
+        ]
+    },
+    {
+        "id": "20b9d58fb917da4d",
+        "type": "kafka-consumer",
+        "z": "a7904b7853fbe02b",
+        "name": "KAFKA_SERVICE",
+        "broker": "aa3211decc00377c",
+        "outOfRangeOffset": "earliest",
+        "fromOffset": "latest",
+        "topic": "order-closed",
+        "groupid": "",
+        "x": 130,
+        "y": 600,
+        "wires": [
+            [
+                "9fef9f57f98adb91"
+            ]
+        ]
+    },
+    {
+        "id": "9fef9f57f98adb91",
+        "type": "debug",
+        "z": "a7904b7853fbe02b",
+        "name": "Api ambev called",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "14bd5020994a69af",
+        "type": "postgreSQLConfig",
+        "name": "",
+        "host": "postgresql",
+        "hostFieldType": "str",
+        "port": 5432,
+        "portFieldType": "num",
+        "database": "postgres",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "applicationName": "",
+        "applicationNameType": "str",
+        "max": 10,
+        "maxFieldType": "num",
+        "idle": 1000,
+        "idleFieldType": "num",
+        "connectionTimeout": 10000,
+        "connectionTimeoutFieldType": "num",
+        "user": "postgres",
+        "userFieldType": "str",
+        "password": "postgres",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "aa3211decc00377c",
+        "type": "kafka-broker",
+        "name": "order-closed",
+        "hosts": "drink-shipping-flow-kafka-1:9092",
+        "selfsign": false,
+        "usetls": false,
+        "cacert": "",
+        "clientcert": "",
+        "privatekey": "",
+        "passphrase": ""
+    }
+]
